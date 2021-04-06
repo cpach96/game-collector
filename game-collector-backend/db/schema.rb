@@ -23,11 +23,8 @@ ActiveRecord::Schema.define(version: 2021_03_31_221025) do
 
   create_table "genres", force: :cascade do |t|
     t.string "name"
-    t.integer "game_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["game_id"], name: "index_genres_on_game_id"
   end
 
-  add_foreign_key "genres", "games"
 end
