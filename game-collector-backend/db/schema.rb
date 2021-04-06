@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2021_03_31_221025) do
     t.string "img_url"
     t.string "description"
     t.integer "value"
+    t.integer "genre_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

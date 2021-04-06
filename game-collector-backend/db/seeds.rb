@@ -5,3 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+rpg = Genre.create(name: "RPG")
+
+adventure = Genre.create(name: "Adventure")
+
+action = Genre.create(name: "Action")
+
+Game.create(title: "The Legend of Zelda", 
+    img_url:"https://cdn.gamer-network.net/2016/usgamer/zelda1header.jpg/EG11/thumbnail/1920x1080/format/jpg/quality/65/long-time-coming-finishing-the-original-legend-of-zelda-in-2016.jpg",
+    description: "The begininng in the acclaimed Legend of Zelda series!", value: 500, genre_id: rpg.id )

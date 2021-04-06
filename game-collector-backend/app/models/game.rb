@@ -1,3 +1,3 @@
 class Game < ApplicationRecord
-    belong_to :genre
+    belongs_to :genre
 end
