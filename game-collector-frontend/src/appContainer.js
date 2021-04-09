@@ -18,7 +18,7 @@ class AppContainer {
         let randomCollection = []
         for (let i = 0; i < 4 ; i++){
             //make it so it adds a game of each genre 
-            debugger
+        
             randomCollection.push(AppContainer.games[Math.floor(Math.random()*AppContainer.games.length)])
         }
         return randomCollection;
@@ -29,9 +29,12 @@ class AppContainer {
         fetch(this.url + '/games')
         .then(resp => resp.json())
         .then(data => {
+            console.log(data)
             data.forEach(game => {
-                new Game(game.title, game.img_url, game.description,game.value)
+                new Game(game.title, game.img_url, game.description,game.value, game.genre)
+                
             });
+            console.log(AppContainer.games)
         })
         //populate the games properties and genres with the returned data
         //call renderGames
