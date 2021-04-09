@@ -2,21 +2,21 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Game Collector!</title>
   </head>
   <body>
     <form action="http://localhost:3000/games" method="POST">
-      <label> Game Title: <input type="text" name="title" id="title" /></label><br />
-      <label> Image Url: <input type="text" name="imgUrl" id="imgUrl" /></label><br />
-      <label> Game Description: <input type="text" name="description" id="description" /></label><br />
-      <label> Game Value: <input type="text" name="value" id="value" /></label><br />
-      <input type="submit" name="submit" id="submit" value="Submit" />
-    </form> 
-
-    <h2>Game Collection</h2>
-    <ol id="collection">
-
-    </ol>
+      <label> Title: <input type="text" name="title" id="title" /></label><br />
+      <label> Image: <input type="text" name="imgUrl" id="imgUrl" /></label><br />
+      <label> Description: <input type="text" name="description" id="description" /></label><br />
+      <label> Value: <input type="text" name="value" id="value" /></label><br />
+      <input type="submit" id="submit" value="Submit" />
+    </form>
+    <button id="generateBtn">Generate new collection!</button>
+    <h1>Your Collection</h1>
+    <div id="collection"></div>
   </body>
+  <script type="application/javascript" src="src/game.js" charset="UTF-8"></script>
+  <script type="application/javascript" src="src/appContainer.js" charset="UTF-8"></script>
   <script type="application/javascript" src="src/index.js" charset="UTF-8"></script>
 </html>

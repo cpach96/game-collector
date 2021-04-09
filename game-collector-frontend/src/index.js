@@ -1,7 +1,8 @@
 
-//tests ---------
 
-
+const app = new AppContainer
+app.getGames()
+app.addEventListeners()
 
 //----------------------
 
