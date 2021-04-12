@@ -5,15 +5,15 @@ class AppContainer {
     static randomCollection = {}
 
     addEventListeners(){
-        const submitBtn = document.getElementById("submit");
-        const generateBtn = document.getElementById("generateBtn")
-        submitBtn.addEventListener('click',this.submitGame)
-        generateBtn.addEventListener('click', this.getRandomCollection)
+        const submitBtn = document.getElementById("newGame");
+        const generateBtn = document.getElementById("generateBtn");
+        submitBtn.addEventListener('submit',() => this.submitGame(event));
+        generateBtn.addEventListener('click', this.getRandomCollection);
     }
 
-    submitGame(){
-        console.log("test")
-        //not ready yet
+    submitGame(event){
+        event.preventDefault();
+        console.log(this)
     }
 
     submitCollection(){
@@ -33,16 +33,13 @@ class AppContainer {
              gameDiv.innerText = game.title
              newRandomCollection.appendChild(gameDiv)
          })
+         //delete works but is broken
             fetch(`http://localhost:3000/games/${randomCollection[0].id}`,{
                 method: 'DELETE',
-                headers: {
-                    'Content-type': 'application/json'
-                }
         })  
             .then(resp => resp.json())
             .then(data => console.log(data))
-
-        
+            .catch(err => alert(err))
      }
 
     getGames(){

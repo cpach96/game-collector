@@ -5,15 +5,17 @@
     <title>Game Collector!</title>
   </head>
   <body>
-    <form action="http://localhost:3000/games" method="POST">
+    <form id="newGame">
+      <label for="">New Game</label><br />
       <label> Title: <input type="text" name="title" id="title" /></label><br />
       <label> Image: <input type="text" name="imgUrl" id="imgUrl" /></label><br />
       <label> Description: <input type="text" name="description" id="description" /></label><br />
       <label> Value: <input type="text" name="value" id="value" /></label><br />
-      <input type="submit" id="submit" value="Submit" />
+      <label>Genre</label><input type="text" name="genre" id="genre" /><br />
+      <input type ="submit">
     </form>
-    <button id="generateBtn">Generate new collection!</button>
-    <h1>Your Collection</h1>
+    <button id="generateBtn">Generate a random collection!</button>
+    <h1>Submitted Games</h1>
     <div id="collection"></div>
   </body>
   <script type="application/javascript" src="src/gameCollection.js" charset="UTF-8"></script>

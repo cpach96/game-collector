@@ -6,7 +6,7 @@ class GamesController < ApplicationController
 
     def destroy
         Game.find(params[:id]).destroy
-        redirect_to '/games'
+        render :json => {id: params[:id], message: "Record destroyed "}
     end
  
 end
