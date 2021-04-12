@@ -1,28 +1,49 @@
 class AppContainer {
    static games = [];
-    genres = [];
+    static genres = [];
     url = "http://localhost:3000"
+    static randomCollection = {}
 
     addEventListeners(){
         const submitBtn = document.getElementById("submit");
         const generateBtn = document.getElementById("generateBtn")
         submitBtn.addEventListener('click',this.submitGame)
-        generateBtn.addEventListener('click', this.generateCollection)
+        generateBtn.addEventListener('click', this.getRandomCollection)
     }
 
     submitGame(){
         console.log("test")
+        //not ready yet
     }
 
-    generateCollection(){ // generates a random collection and value of games for this instance 
+    submitCollection(){
+        this.getRandomCollection();
+    }
+
+    getRandomCollection(){ // generates a random collection and value of games for this instance 
         let randomCollection = []
         for (let i = 0; i < 4 ; i++){
-            //make it so it adds a game of each genre 
-        
             randomCollection.push(AppContainer.games[Math.floor(Math.random()*AppContainer.games.length)])
-        }
-        return randomCollection;
-    }
+        };
+
+         new GameCollection(randomCollection)
+         const newRandomCollection = document.getElementById('collection')
+         AppContainer.randomCollection.games.forEach(game => {
+             const gameDiv = document.createElement('div');
+             gameDiv.innerText = game.title
+             newRandomCollection.appendChild(gameDiv)
+         })
+            fetch(`http://localhost:3000/games/${randomCollection[0].id}`,{
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+        })  
+            .then(resp => resp.json())
+            .then(data => console.log(data))
+
+        
+     }
 
     getGames(){
         //make a fetch to /games
@@ -31,9 +52,10 @@ class AppContainer {
         .then(data => {
             console.log(data)
             data.forEach(game => {
-                new Game(game.title, game.img_url, game.description,game.value, game.genre)
+                new Game(game.title, game.img_url, game.description,game.value, game.genre,game.id)
                 
             });
+            this.renderGames();
             console.log(AppContainer.games)
         })
         //populate the games properties and genres with the returned data
@@ -42,6 +64,24 @@ class AppContainer {
     };
 
     renderGames(){
+        const ul = document.createElement('ul')
+        AppContainer.games.forEach(game => {
+            const h2Title = document.createElement('h2')
+            const liImg = document.createElement('IMG')
+            const liDesc = document.createElement('li')
+            const liVal = document.createElement('li')
+            h2Title.innerText = game.title
+            liImg.src = game.img_url
+            liImg.style.height = '100px'
+            liImg.style.width = '100px'
+            liDesc.innerText = game.description
+            liVal.innerText = `Game Value $${game.value}!`
+            ul.appendChild(h2Title)
+            ul.appendChild(liImg)
+            ul.appendChild(liDesc)
+            ul.appendChild(liVal)
+        });
+        document.body.appendChild(ul)
         //create dom nodes and insert data into them to render into the dom
     };
 };
