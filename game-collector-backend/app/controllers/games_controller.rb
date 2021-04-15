@@ -6,7 +6,14 @@ class GamesController < ApplicationController
 
     def destroy
         Game.find(params[:id]).destroy
-        render :json => {id: params[:id], message: "Record destroyed "}
+        if
+           game = Game.find_by(id: params[:delete])
+           game.destroy
+           render :json => {id: params[:id], message: "Record destroyed "}
+        else 
+            render :json => {message: "Error record does not exist"}
+        end
+        
     end
 
     def create
