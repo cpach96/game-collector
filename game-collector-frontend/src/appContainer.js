@@ -19,7 +19,7 @@ class AppContainer {
     };
 
     submitGame(event) {   //submit new game event
-         // event.preventDefault();
+         // event.preventDefault(); want this to refresh
         const form = document.getElementById("newGame")
         const formData = event.target;
         fetch(`${this.url}/games`, {
@@ -42,7 +42,7 @@ class AppContainer {
     }
 
     deleteGame(event){
-        //event.preventDefault();
+        //event.preventDefault(); want this to refresh
         const form = document.getElementById("deleteGame")
         const formData = event.target;
         const id = formData.delete.value
@@ -103,21 +103,28 @@ class AppContainer {
             const liDesc = document.createElement('li')
             const liVal = document.createElement('li')
             const li_Id = document.createElement('li')
+            const liGenre = document.createElement('li')
             h2Title.innerText = game.title
             liImg.src = game.img_url
             liImg.style.height = '100px'
             liImg.style.width = '100px'
             liDesc.innerText = `Description: ${game.description}`
             liVal.innerText = `Game Value $${game.value}!`
+            liGenre.innerText = `Genre: ${game.genre.name}`
             li_Id.innerText = `Ref ID ${game.id}`
             ul.appendChild(h2Title)
             ul.appendChild(liImg)
             ul.appendChild(liDesc)
             ul.appendChild(liVal)
+            ul.appendChild(liGenre)
             ul.appendChild(li_Id)
         });
         document.body.appendChild(ul)
+        const total = document.getElementById("totalValue")
+        total.innerText = "Total Database Collection Value $" + AppContainer.games.reduce(function (acc, obj) {return acc + obj.value;}, 0);
+    
     };
+
 };
 
 //app container controls the logic of the page 
