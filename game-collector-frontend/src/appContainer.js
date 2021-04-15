@@ -1,19 +1,39 @@
 class AppContainer {
-   static games = [];
+    static games = [];
     static genres = [];
     url = "http://localhost:3000"
     static randomCollection = {}
 
     addEventListeners(){
         const submitBtn = document.getElementById("newGame");
-        const generateBtn = document.getElementById("generateBtn");
-        submitBtn.addEventListener('submit',() => this.submitGame(event));
-        generateBtn.addEventListener('click', this.getRandomCollection);
-    }
+        submitBtn.addEventListener('submit', () => this.submitGame(event)) //possible bug with execution conxtent switiching to window?
 
-    submitGame(event){
+        const generateBtn = document.getElementById("generateBtn");
+        generateBtn.addEventListener('click', this.getRandomCollection);
+        
+    };
+
+    submitGame(event) {   
         event.preventDefault();
-        console.log(this)
+        const form = document.getElementById("newGame")
+        const formData = event.target;
+        fetch(`${this.url}/games`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                title: formData.title.value,
+                img_url: formData.imgUrl.value,
+                description: formData.description.value,
+                value: formData.value.value,
+                genre: formData.genre.value
+            })
+        })
+        .then(resp => resp.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err));
     }
 
     submitCollection(){
