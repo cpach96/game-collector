@@ -1,6 +1,7 @@
 class AppContainer {
     static games = [];
     static genres = [];
+    static gameCollection = document.getElementById("new-collection");
     url = "http://localhost:3000"
     // static randomCollection = {}
 
@@ -11,15 +12,13 @@ class AppContainer {
         const deleteBtn = document.getElementById("deleteGame")
         deleteBtn.addEventListener('submit', () => this.deleteGame(event))
 
-        const sortRts = document.getElementById("rts")
+        const sortRts = document.getElementById("rts") //find all games at are rts genre
         sortRts.addEventListener('click', () => this.sortGames());
-
-       // const generateBtn = document.getElementById("generateBtn");
-        // generateBtn.addEventListener('click', this.getRandomCollection);
-
-       // const deleteButton = document.getElementById("deleteGame")
-        // deleteButton.addEventListener('click', () => this.removeGame());
     };
+
+   // removeGame(){
+    // bug bug bug
+    // }
 
     submitGame(event) {   //submit new game event
         event.preventDefault(); 
@@ -40,30 +39,13 @@ class AppContainer {
             })
         })
         .then(resp => resp.json())
-        .then(json => {
-        const ul = document.getElementById('gameCollection')  //this works can refactor appends newest game on dom without refresh
-        const h2Title = document.createElement('h2')
-        const liImg = document.createElement('IMG')
-        const liDesc = document.createElement('li')
-        const liVal = document.createElement('li')
-        const li_Id = document.createElement('li')
-        const liGenre = document.createElement('li')
-        h2Title.innerText = formData.title.value
-        liImg.src = formData.imgUrl.value
-        liImg.style.height = '100px'
-        liImg.style.width = '100px'
-        liDesc.innerText = `Description: ${formData.description.value}`
-        liVal.innerText = `Game Value $${formData.value.value}!`
-        liGenre.innerText = `Genre: ${formData.genre.value}`
-        li_Id.innerText = `Ref ID ${formData.id.value}`
-        ul.appendChild(h2Title)
-        ul.appendChild(liImg)
-        ul.appendChild(liDesc)
-        ul.appendChild(liVal)
-        ul.appendChild(liGenre)
-        ul.appendChild(li_Id)     
+        .then(data => {
+           const newGame = new Game(data.title, data.img_url, data.description,data.value, data.genre,data.id)
+            newGame.addToDom();
+            this.getTotalValue();
         })
         .catch(err => console.log(err));
+
     }
 
     deleteGame(event){
@@ -87,18 +69,31 @@ class AppContainer {
     }
 
     sortGames(){
-        const list = document.getElementById("sortList")
-        const howMany = document.createElement("h1")
-        let counter = 0
-        for(let i = 0; i < AppContainer.genres.length; i++){
-            if(AppContainer.genres[i].name === "RTS"){
-                counter++
-                howMany.innerText = counter
-                list.appendChild(howMany)
+        AppContainer.games.forEach(game => {
+            const list = document.getElementById('sortList')
+            const h2Title = document.createElement('h2')
+            const liImg = document.createElement('IMG')
+            const liDesc = document.createElement('li')
+            const liVal = document.createElement('li')
+            const liGenre = document.createElement('li')
+            if(game.genre.name === "RTS"){
+            h2Title.innerText = game.title
+            liImg.src = game.img_url
+            liImg.style.height = '100px'
+            liImg.style.width = '100px'
+            liDesc.innerText = `Description: ${game.description}`
+            liVal.innerText = `Game Value $${game.value}!`
+            liGenre.innerText = `Genre: ${game.genre.name}`
+            list.appendChild(h2Title)
+            list.appendChild(liImg)
+            list.appendChild(liDesc)
+            list.appendChild(liVal)
+            list.appendChild(liGenre)
             }else{
-    
+
             }
-        }
+
+        });
     }
 
    // getRandomCollection(){  stretch feature come back later
@@ -135,37 +130,15 @@ class AppContainer {
                 
             });
             this.renderGames();
-            console.log(AppContainer.games)
         })
+        
         .catch(error => alert(error));
     };
 
     renderGames(){ //appends games to url
-        const ul = document.createElement('ul')
-        ul.setAttribute('id', 'gameCollection')
         AppContainer.games.forEach(game => {
-            const h2Title = document.createElement('h2')
-            const liImg = document.createElement('IMG')
-            const liDesc = document.createElement('li')
-            const liVal = document.createElement('li')
-            const liGenre = document.createElement('li')
-            const liId = document.createElement('li')
-            h2Title.innerText = game.title
-            liImg.src = game.img_url
-            liImg.style.height = '100px'
-            liImg.style.width = '100px'
-            liDesc.innerText = `Description: ${game.description}`
-            liVal.innerText = `Game Value $${game.value}!`
-            liGenre.innerText = `Genre: ${game.genre.name}`
-            liId.innerText = `Ref ID: ${game.id}`
-            ul.appendChild(h2Title)
-            ul.appendChild(liImg)
-            ul.appendChild(liDesc)
-            ul.appendChild(liVal)
-            ul.appendChild(liGenre)
-            ul.appendChild(liId)
+           game.addToDom();
         });
-        document.body.appendChild(ul)
         this.getTotalValue()
     };
 
