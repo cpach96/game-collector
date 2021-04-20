@@ -6,6 +6,9 @@ class Game {
         this.value = value; 
         this.genre = genre;
         this.id = id;
+        this.element = document.createElement("div");
+        this.element.id = `game-${this.id}`
+        this.element.addEventListener("click", this.clickHandler)
         AppContainer.games.push(this)
         AppContainer.genres.push(this.genre)
         
@@ -21,7 +24,7 @@ class Game {
         const liDesc = document.createElement('li')
         const liVal = document.createElement('li')
         const liGenre = document.createElement('li')
-        const liId = document.createElement('li')
+        const deleteButton = document.createElement('button')
         h2Title.innerText = this.title
         liImg.src = this.img_url
         liImg.style.height = '100px'
@@ -29,14 +32,36 @@ class Game {
         liDesc.innerText = `Description: ${this.description}`
         liVal.innerText = `Game Value $${this.value}!`
         liGenre.innerText = `Genre: ${this.genre ? this.genre.name : "unknown"}`
-        liId.innerText = `Ref ID: ${this.id}`
-        AppContainer.gameCollection.appendChild(h2Title)
-        AppContainer.gameCollection.appendChild(liImg)
-        AppContainer.gameCollection.appendChild(liDesc)
-        AppContainer.gameCollection.appendChild(liVal)
-        AppContainer.gameCollection.appendChild(liGenre)
-        AppContainer.gameCollection.appendChild(liId)
+        deleteButton.class = "delete"
+        deleteButton.id = this.id
+        deleteButton.innerText = "Delete Game"
+        this.element.appendChild(h2Title)
+        this.element.appendChild(liImg)
+        this.element.appendChild(liDesc)
+        this.element.appendChild(liVal)
+        this.element.appendChild(liGenre)
+        this.element.appendChild(deleteButton)
+        this.addEventListeners()
+        AppContainer.gameCollection.appendChild(this.element)
+
+        
+        
     }
+
+    get gameCollection(){
+        return document.getElementById("new-collection");
+    }
+
+    addEventListeners(){
+        this.element.addEventListener("click", this.clickHandler)
+    }
+
+    clickHandler = (e) => {
+        let id = e.target.id
+        AppContainer.deleteGame(id)
+    }
+
+
 
     
    /// static byGenre(genreName){ not enabled

@@ -2,7 +2,7 @@ class AppContainer {
     static games = [];
     static genres = [];
     static gameCollection = document.getElementById("new-collection");
-    url = "http://localhost:3000"
+     url = "http://localhost:3000"
     // static randomCollection = {}
 
     addEventListeners(){
@@ -48,24 +48,25 @@ class AppContainer {
 
     }
 
-    deleteGame(event){
-        //event.preventDefault(); want this to refresh
-        const form = document.getElementById("deleteGame")
-        const formData = event.target;
-        const id = formData.delete.value
-        fetch(`${this.url}/games/${id}`, {
+    static deleteGame(id){
+        let configObj = {
             method: 'DELETE',
             headers: {
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify({
-                delete: id
-            })
+                "Content-Type": "application/json",
+                Accept: "application/json"
+            }
+        }
+        fetch(`http://localhost:3000/games/${id}`, configObj)
+        .then(res => res.json())
+        .then(json => {
+            alert(json.message)
         })
-        .then(resp => resp.json())
-        .then(data => console.log(data))
-        .catch(err => console.log(err));
-        
+
+        AppContainer.games = AppContainer.games.filter(i => i.id != id)
+
+        let game = document.getElementById(`game-${id}`)
+        game.remove()
+
     }
 
     sortGames(){
