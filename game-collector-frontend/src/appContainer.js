@@ -11,15 +11,18 @@ class AppContainer {
         const deleteBtn = document.getElementById("deleteGame")
         deleteBtn.addEventListener('submit', () => this.deleteGame(event))
 
+        const sortRts = document.getElementById("rts")
+        sortRts.addEventListener('click', () => this.sortGames());
+
        // const generateBtn = document.getElementById("generateBtn");
         // generateBtn.addEventListener('click', this.getRandomCollection);
 
-        
-        
+       // const deleteButton = document.getElementById("deleteGame")
+        // deleteButton.addEventListener('click', () => this.removeGame());
     };
 
     submitGame(event) {   //submit new game event
-         // event.preventDefault(); want this to refresh
+        event.preventDefault(); 
         const form = document.getElementById("newGame")
         const formData = event.target;
         fetch(`${this.url}/games`, {
@@ -37,7 +40,29 @@ class AppContainer {
             })
         })
         .then(resp => resp.json())
-        .then(data => console.log(data))
+        .then(json => {
+        const ul = document.getElementById('gameCollection')  //this works can refactor appends newest game on dom without refresh
+        const h2Title = document.createElement('h2')
+        const liImg = document.createElement('IMG')
+        const liDesc = document.createElement('li')
+        const liVal = document.createElement('li')
+        const li_Id = document.createElement('li')
+        const liGenre = document.createElement('li')
+        h2Title.innerText = formData.title.value
+        liImg.src = formData.imgUrl.value
+        liImg.style.height = '100px'
+        liImg.style.width = '100px'
+        liDesc.innerText = `Description: ${formData.description.value}`
+        liVal.innerText = `Game Value $${formData.value.value}!`
+        liGenre.innerText = `Genre: ${formData.genre.value}`
+        li_Id.innerText = `Ref ID ${formData.id.value}`
+        ul.appendChild(h2Title)
+        ul.appendChild(liImg)
+        ul.appendChild(liDesc)
+        ul.appendChild(liVal)
+        ul.appendChild(liGenre)
+        ul.appendChild(li_Id)     
+        })
         .catch(err => console.log(err));
     }
 
@@ -58,7 +83,22 @@ class AppContainer {
         .then(resp => resp.json())
         .then(data => console.log(data))
         .catch(err => console.log(err));
+        
+    }
 
+    sortGames(){
+        const list = document.getElementById("sortList")
+        const howMany = document.createElement("h1")
+        let counter = 0
+        for(let i = 0; i < AppContainer.genres.length; i++){
+            if(AppContainer.genres[i].name === "RTS"){
+                counter++
+                howMany.innerText = counter
+                list.appendChild(howMany)
+            }else{
+    
+            }
+        }
     }
 
    // getRandomCollection(){  stretch feature come back later
@@ -76,6 +116,11 @@ class AppContainer {
         // })
           
     // }
+
+    getTotalValue(){
+        const total = document.getElementById("totalValue")
+        total.innerText = "Total Database Collection Value $" + AppContainer.games.reduce(function (acc, obj) {return acc + obj.value;}, 0);
+    }
 
    
 
@@ -97,13 +142,14 @@ class AppContainer {
 
     renderGames(){ //appends games to url
         const ul = document.createElement('ul')
+        ul.setAttribute('id', 'gameCollection')
         AppContainer.games.forEach(game => {
             const h2Title = document.createElement('h2')
             const liImg = document.createElement('IMG')
             const liDesc = document.createElement('li')
             const liVal = document.createElement('li')
-            const li_Id = document.createElement('li')
             const liGenre = document.createElement('li')
+            const liId = document.createElement('li')
             h2Title.innerText = game.title
             liImg.src = game.img_url
             liImg.style.height = '100px'
@@ -111,18 +157,16 @@ class AppContainer {
             liDesc.innerText = `Description: ${game.description}`
             liVal.innerText = `Game Value $${game.value}!`
             liGenre.innerText = `Genre: ${game.genre.name}`
-            li_Id.innerText = `Ref ID ${game.id}`
+            liId.innerText = `Ref ID: ${game.id}`
             ul.appendChild(h2Title)
             ul.appendChild(liImg)
             ul.appendChild(liDesc)
             ul.appendChild(liVal)
             ul.appendChild(liGenre)
-            ul.appendChild(li_Id)
+            ul.appendChild(liId)
         });
         document.body.appendChild(ul)
-        const total = document.getElementById("totalValue")
-        total.innerText = "Total Database Collection Value $" + AppContainer.games.reduce(function (acc, obj) {return acc + obj.value;}, 0);
-    
+        this.getTotalValue()
     };
 
 };

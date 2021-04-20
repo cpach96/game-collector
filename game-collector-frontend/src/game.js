@@ -7,9 +7,13 @@ class Game {
         this.genre = genre;
         this.id = id;
         AppContainer.games.push(this)
+        AppContainer.genres.push(this.genre)
         
     }
     static byGenre(genreName){
         return AppContainer.games.filter(game => game.genre.name === genreName)
     }
+    
+
+
 }
